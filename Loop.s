@@ -35,7 +35,7 @@ Start:
     beq Timer                           @ 'Batch Equal', if the previous cmp is 'true'
                                         @ It calls the function 'Timer'
 
-    bnq Start                           @ 'Batch not Equal', if the previous cmp is 'false'
+    bne Start                           @ 'Batch not Equal', if the previous cmp is 'false'
                                         @ It calls himself again, causing a loop
                                         @ In this case it nwill stop only if the simulator stops
 
