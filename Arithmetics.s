@@ -7,6 +7,9 @@
 
 .text                                   
 
+                                        @ 'str_' is the variable, asciz is the type and
+                                        @ the "Text Inside" is the value that variable has
+
     str_ini: .asciz "Arithmetic functions:"
     str_sum: .asciz "Addiction of 1 and 2 is: "
     str_sub: .asciz "Subtraction of 2 and 1 is: "
@@ -35,6 +38,8 @@ Sum:
 
     mov r1, #2                          @ Moving 'y' to position 2 (y = 2)
     add r7, r8, r9                      @ 'add' in r7 the sum os r8 and r9 (r7 = r8 + r9)
+                                        @ can use numbers as second argument as well
+
     mov r2, r7                          @ Putting in r2 the value of r7, will be used to print
     swi Print                           @ Print the integer in r2
 
@@ -48,6 +53,8 @@ Sub:
 
     mov r1, #4                          @ Moving 'y' to position 4 (y = 4)
     sub r7, r8, r9                      @ 'sub' the r8 from r9 and putting in r7 (r7 = r9 - r8)
+                                        @ can use numbers as second argument as well
+
     mov r2, r7                          @ Putting in r2 the value os r7, will be used to print
     swi Print                           @ Print the integer in r2
 
@@ -61,6 +68,8 @@ Mult:
 
     mov r1, #6                          @ Moving 'y' to position 6 (y = 6)
     mul r7, r9, r8                      @ 'mul' the r8 from r9 and putting in r7 (r7 = r9 * r8)
+                                        @ can use numbers as second argument as well
+                                        
     mov r2, r7                          @ Putting in r2 the value os r7, will be used to print
     swi Print                           @ Print the integer in r2
 
