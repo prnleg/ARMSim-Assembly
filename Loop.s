@@ -32,13 +32,11 @@ Start:
 
 Clock:
     swi Ticks
-    cmp r0, r8                       @ 'cmp' compares the first instruction with the
-                                        @ second and go to the next instruction
-
-    beq Timer                           @ 'Batch Equal', if the previous cmp is 'true'
+    cmp r0, r8                          @ 'cmp' compares the first instruction with the
+    beq Timer                           @ second and go to the next instruction
+    bne Clock                           @ 'Batch Equal', if the previous cmp is 'true'
                                         @ It calls the function 'Timer'
-
-    bne Clock                           @ 'Batch not Equal', if the previous cmp is 'false'
+                                        @ 'Batch not Equal', if the previous cmp is 'false'
                                         @ It calls himself again, causing a loop
                                         @ In this case it nwill stop only if the simulator stops
 
