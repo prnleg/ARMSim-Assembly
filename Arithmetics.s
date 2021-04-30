@@ -3,17 +3,19 @@
 
 .equ PrintS,0x204                       @ Bind to print a String on the LCD
 .equ Print,0x205                        @ Bind to print an Integer on the LCD
+.equ Clear,0x206                        @ Bind to clear the LCD
 
 .text                                   
 
-    str_ini: .asciz "These are some arithmetic functions:"
-    str_sum: .asciz "The Addiction of 1 and 2 is: "
-    str_sub: .asciz "The Subtraction of 2 and 1 is: "
-    str_mul: .asciz "The Multiplication of 1 and 2 is: "
+    str_ini: .asciz "Arithmetic functions:"
+    str_sum: .asciz "Addiction of 1 and 2 is: "
+    str_sub: .asciz "Subtraction of 2 and 1 is: "
+    str_mul: .asciz "Multiplication of 1 and 2 is: "
 
 .align                                  
 
 @ Setting up some Integers to use on functions
+swi Clear                               @ This will clear the LCD
 mov r9, #1                              @ Set as value of 1 (r9 = 1)
 mov r8, #2                              @ Set as value of 2 (r9 = 2)
 
@@ -45,7 +47,7 @@ Sub:
     swi PrintS                          @ Values set on those lines above
 
     mov r1, #4                          @ Moving 'y' to position 4 (y = 4)
-    sub r7, r9, r8                      @ 'sub' the r8 from r9 and putting in r7 (r7 = r9 - r8)
+    sub r7, r8, r9                      @ 'sub' the r8 from r9 and putting in r7 (r7 = r9 - r8)
     mov r2, r7                          @ Putting in r2 the value os r7, will be used to print
     swi Print                           @ Print the integer in r2
 
