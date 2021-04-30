@@ -43,6 +43,7 @@ Clock:
 
 Timer:
     add r9, r9, #1                      @ Adds in r9 himself and 1 (r9++ or r9 = r9 + 1)
+    mov r0, #0                          @ Putting in r0 the value of #0, will be used to print
     mov r1, #1                          @ Putting in r1 the value of #1, will be used to print
     mov r2, r9                          @ Putting in r2 the value of r9, will be used to print
     swi Print
