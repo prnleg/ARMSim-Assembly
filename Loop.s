@@ -27,9 +27,12 @@ swi PrintS
 
 Start:
     swi Ticks                           @ Get a tick and put in r0
+    mov r8, r0
     b Clock                             @ Goes to Çlock' function
 
 Clock:
+    swi Ticks
+    sub r0, r0, r8
     cmp r0, #1000                       @ 'cmp' compares the first instruction with the
     beq Timer                           @ second and go to the next instruction
     bne Clock                           @ 'Batch Equal', if the previous cmp is 'true'
