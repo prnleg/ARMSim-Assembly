@@ -32,7 +32,7 @@ Start:
 
 Clock:
     swi Ticks
-    cmp r0, r8                          @ 'cmp' compares the first instruction with the
+    cmp r0, #1000                       @ 'cmp' compares the first instruction with the
     beq Timer                           @ second and go to the next instruction
     bne Clock                           @ 'Batch Equal', if the previous cmp is 'true'
                                         @ It calls the function 'Timer'
