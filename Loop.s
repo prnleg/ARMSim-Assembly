@@ -8,7 +8,7 @@
 
 .text
 
-    str_phrase: .asciz "Program running for:"
+    str_phrase: .asciz "Program running for"
     str_seconds: .asciz "Seconds"
 
 .align
@@ -28,16 +28,18 @@ mov r1, #1
 
 Start:
     swi Ticks                           @ Get a tick and put in r0
+    mov r8, r0
     b Clock                             @ Goes to Çlock' function
 
 Clock:
-    cmp r0, #1000                       @ 'cmp' compares the first instruction with the
+    swi Ticks
+    cmp r0, r8                       @ 'cmp' compares the first instruction with the
                                         @ second and go to the next instruction
 
     beq Timer                           @ 'Batch Equal', if the previous cmp is 'true'
                                         @ It calls the function 'Timer'
 
-    bne Start                           @ 'Batch not Equal', if the previous cmp is 'false'
+    bne Clock                           @ 'Batch not Equal', if the previous cmp is 'false'
                                         @ It calls himself again, causing a loop
                                         @ In this case it nwill stop only if the simulator stops
 
