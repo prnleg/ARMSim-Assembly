@@ -28,7 +28,9 @@ mov r1, #1
 
 Start:
     swi Ticks                           @ Get a tick and put in r0
+    b Clock                             @ Goes to Çlock' function
 
+Clock:
     cmp r0, #1000                       @ 'cmp' compares the first instruction with the
                                         @ second and go to the next instruction
 
