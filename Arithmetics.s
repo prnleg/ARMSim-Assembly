@@ -19,8 +19,8 @@
 
 @ Setting up some Integers to use on functions
 swi Clear                               @ This will clear the LCD
-mov r9, #1                              @ Set as value of 1 (r9 = 1)
-mov r8, #2                              @ Set as value of 2 (r8 = 2)
+mov r9, #2                              @ Set as value of 1 (r9 = 2)
+mov r8, #3                              @ Set as value of 2 (r8 = 3)
 
 
 Start:
