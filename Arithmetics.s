@@ -71,7 +71,7 @@ Mult:
                                         @ can use numbers as second argument as well
                                         
     mov r2, r7                          @ Putting in r2 the value os r7, will be used to print
-    swi Print                           @ Print the integer in r2
+    swi Print                           @ Print the integer inside r2
 
 
 .end
