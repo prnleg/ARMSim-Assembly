@@ -1,5 +1,5 @@
 @ Just some codes with sum, sub, multiply and function uses
-@ Also showing in display
+@ Also showing on display
 
 .equ PrintS,0x204                       @ Bind to print a String on the LCD
 .equ Print,0x205                        @ Bind to print an Integer on the LCD
