@@ -1,5 +1,5 @@
 @ Just some codes with sum, sub, multiply and function uses
-@ Also showing in display
+@ Also showing on display
 
 .equ PrintS,0x204                       @ Bind to print a String on the LCD
 .equ Print,0x205                        @ Bind to print an Integer on the LCD
@@ -19,8 +19,8 @@
 
 @ Setting up some Integers to use on functions
 swi Clear                               @ This will clear the LCD
-mov r9, #1                              @ Set as value of 1 (r9 = 1)
-mov r8, #2                              @ Set as value of 2 (r9 = 2)
+mov r9, #2                              @ Set as value of 1 (r9 = 2)
+mov r8, #3                              @ Set as value of 2 (r8 = 3)
 
 
 Start:
@@ -71,7 +71,7 @@ Mult:
                                         @ can use numbers as second argument as well
                                         
     mov r2, r7                          @ Putting in r2 the value os r7, will be used to print
-    swi Print                           @ Print the integer in r2
+    swi Print                           @ Print the integer inside r2
 
 
 .end

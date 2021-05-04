@@ -28,7 +28,7 @@ swi PrintS
 Start:
     swi Ticks                           @ Get a tick and put in r0
     mov r8, r0
-    b Clock                             @ Goes to Çlock' function
+    b Clock                             @ Goes to 'Clock' function
 
 Clock:
     swi Ticks
@@ -39,7 +39,7 @@ Clock:
                                         @ It calls the function 'Timer'
                                         @ 'Batch not Equal', if the previous cmp is 'false'
                                         @ It calls himself again, causing a loop
-                                        @ In this case it nwill stop only if the simulator stops
+                                        @ In this case it will stop only if the simulator stops
 
 
 Timer:
