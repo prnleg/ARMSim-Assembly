@@ -2,7 +2,6 @@
 @ and the 0.0 to 3.3
 @ Are there better solutions for this use in specific, just use as example
 
-
 @ Those are bind to use the Software Interuptions Quickier
 .equ Seg8, 0x200                                    @ Display on the 8 Segments the value in r0
 .equ Print, 0x205                                   @ Display on the LCD the value in r2
@@ -61,7 +60,8 @@ Start:
 @ This is where it compares with each specific buttton, there are better ways to do that
 @ Use this just as an example
 Display:
-    cmp r0, #0x01
+                                                    @ As the macro runs, it will pull the position. '0' in this case
+    cmp r0, #0x01                                   @ This represent the value of the Blue Button
     beq Dig0
     cmp r0, #0x02
     beq Dig1
@@ -93,123 +93,77 @@ Display:
     beq DigE
     cmp r0, #0x8000
     beq DigF
-    bne Start
+
+Dig0:
+mov r3, #0
+b Dig
+
+Dig1:
+mov r3, #1
+b Dig
+
+Dig2:
+mov r3, #2
+b Dig
+
+Dig3:
+mov r3, #3
+b Dig
+
+Dig4:
+mov r3, #4
+b Dig
+
+Dig5:
+mov r3, #5
+b Dig
+
+Dig6:
+mov r3, #6
+b Dig
+
+Dig7:
+mov r3, #7
+b Dig
+
+Dig8:
+mov r3, #8
+b Dig
+
+Dig9:
+mov r3, #9
+b Dig
+
+DigA:
+mov r3, #10
+b Dig
+
+DigB:
+mov r3, #11
+b Dig
+
+DigC:
+mov r3, #12
+b Dig
+
+DigD:
+mov r3, #13
+b Dig
+
+DigE:
+mov r3, #14
+b Dig
+
+DigF:
+mov r3, #15
+b Dig
 
 
 @ Each function is printing a number (in hexa) on the 8 Segment Display
-Dig0:
-    mov r3, #0                                      @ As the macro runs, it will pull the position '0' in this case
+Dig:
     ldr r1, =Digits                                 @ Load the macros on r1
     ldr r0, [r1, r3, lsl#2]                         @ Puts on r0 the digits and the position you choose
     swi Seg8                                        @ Print on the Display
     b Start                                         @ Return to the code loop
-
-
-@ Down below will be the same "base", just changing the position
-
-Dig1:
-    mov r3, #1
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig2:
-    mov r3, #2
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig3:
-    mov r3, #3
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig4:
-    mov r3, #4
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig5:
-    mov r3, #5
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig6:
-    mov r3, #6
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig7:
-    mov r3, #7
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig8:
-    mov r3, #8
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-Dig9:
-    mov r3, #9
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-DigA:
-    mov r3, #10
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-DigB:
-    mov r3, #11
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-DigC:
-    mov r3, #12
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-DigD:
-    mov r3, #13
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-DigE:
-    mov r3, #14
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
-
-DigF:
-    mov r3, #15
-    ldr r1, =Digits
-    ldr r0, [r1, r3, lsl#2]
-    swi Seg8
-    b Start
 
 .end
