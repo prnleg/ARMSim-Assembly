@@ -5,7 +5,7 @@
 @ Those are bind to use the Software Interuptions Quickier
 .equ Seg8, 0x200                                    @ Display on the 8 Segments the value in r0
 .equ Print, 0x205                                   @ Display on the LCD the value in r2
-.equ Bottn, 0x202                                   @ Put in r0 the button pressed (left/right)
+.equ Buttn, 0x202                                   @ Put in r0 the button pressed (left/right)
 .equ BlueB, 0x203                                   @ Put in r0 the button pressed (0-15)
 
 
