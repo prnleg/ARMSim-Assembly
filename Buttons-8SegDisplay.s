@@ -7,7 +7,7 @@
 .equ Print, 0x205                                   @ Display on the LCD the value in r2
 .equ Buttn, 0x202                                   @ Put in r0 the button pressed (left/right)
 .equ BlueB, 0x203                                   @ Put in r0 the button pressed (0-15)
-
+.equ Clear,0x206                        @ Bind to clear the LCD
 
 @ Those are binds for each one on 8 segment display 
 .equ SEG_A,0x80
@@ -48,6 +48,7 @@ mov r0, #0                                          @ Starting the variable with
 mov r1, #0                                          @ Starting the variable with 0
 mov r2, #0                                          @ Starting the variable with 0
 
+swi Clear                                           @ This will clear the LCD
 
 @ This will create a loop where it compares if any Blue Button was pressed or not
 Start:
