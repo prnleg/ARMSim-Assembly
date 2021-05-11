@@ -1,6 +1,7 @@
 @ Just a simple text printer
 @ It will print the "Hello World" in the LC Display
 
+.equ Clear,0x206                        @ Bind to clear the LCD
 .equ Print,0x204                        @ This is a bind for a swi (Software Instruction),
                                         @ this instruction basically print a String in the LCD
 
@@ -10,6 +11,8 @@
                                         @ the "Hello World" is the value that variable has
 
 .align                                  @ This specify where the code is
+
+swi Clear                               @ This will clear the LCD
 
 start:                                  @ This is a "Function", you can name it what ever you want
 
