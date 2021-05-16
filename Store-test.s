@@ -41,7 +41,7 @@ ldr r3, =BLOCK1                         @ Loads again to reset the positions
 add r1, r1, #2                          @ For print
 mov r5, #3                              @ Setting the loop again
 
-Write:                                   @ This will read and write in memory
+Write:                                  @ This will read and write in memory
     ldr r2, [r3], #0x4                  @ Read
     str r2, [r4], #0x4                  @ This one will write in [r4] (value) the r2, and will walk 4 bytes
     subs r5, r5, #1                     
@@ -54,6 +54,9 @@ ldr r4, =BLOCK2                         @ Loads again to reset the positions
 
 Read:
     ldr r2, [r4], #0x4                  @ This one will read in r2 the value in [r4], walking 4 bytes
+                                        @ If you want the expecific position use "ldr r2, [r4, #0x0]"
+                                        @ where the #0x0 is the position, so can be #0x0, #0x4, #0x8 so on
+                                        @ knowing that you're using .word as array of 32 bits (can be .hword or .byte)
     swi Print
     add r1, r1, #1
     subs r5, r5, #1
