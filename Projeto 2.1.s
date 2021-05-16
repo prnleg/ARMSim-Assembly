@@ -129,8 +129,9 @@ Clock:
     bne Clock                                       @ If false return to the loop until complete 1 second
 
 Count:
-    cmp r9, #1                                     @ Compare if it's the last number
-    beq Seconds                                    @ If True goes to Minute
+    ldr r9, [r3, #0x34]
+    cmp r9, #9                                     @ Compare if it's the last number
+    bge Seconds                                    @ If True goes to Minute
     add r9, r9, #1                                 @ Else r9++ and goes
     str r9, [r3, #0x34]
     b   PrTime
@@ -139,8 +140,8 @@ Seconds:
     mov r9, #0
     str r9, [r3, #0x34]
     ldr r9, [r3, #0x30] 
-    cmp r9, #1                                     @ Compare if it's the last number
-    beq Minutes1                                   @ If True goes to Minute
+    cmp r9, #5                                     @ Compare if it's the last number
+    bge Minutes1                                   @ If True goes to Minute
     add r9, r9, #1                                 @ Else r9++ and goes
     str r9, [r3, #0x30]
     mov r9, #0
@@ -150,8 +151,8 @@ Minutes1:
     mov r9, #0
     str r9, [r3, #0x30]
     ldr r9, [r3, #0x2C]
-    cmp r9, #1
-    beq Minutes2
+    cmp r9, #9
+    bge Minutes2
     add r9, r9, #1
     str r9, [r3, #0x2C]
     mov r9, #0
@@ -161,8 +162,8 @@ Minutes2:
     mov r9, #0
     str r9, [r3, #0x2C]
     ldr r9, [r3, #0x28]
-    cmp r9, #1
-    beq Hours1
+    cmp r9, #5
+    bge Hours1
     add r9, r9, #1
     str r9, [r3, #0x28]
     mov r9, #0
@@ -171,12 +172,12 @@ Minutes2:
 Hours1:
     ldr r9, [r3, #0x20]                             @ Load Second counter for hour
     cmp r9, #2                                      @ If it's 20:00:00
-    beq Hours2                                      @ Goes to Hour2
+    bge Hours2                                      @ Goes to Hour2
     mov r9, #0
     str r9, [r3, #0x28]                             @ Store 0 in Second counter for minute
     ldr r9, [r3, #0x24]                             @ Load First counter for Hour
     cmp r9, #9                                      @ If it's 9, like 9:00:00 or 19:00:00
-    beq Hours3                                      @ Goes to Hour 3
+    bge Hours3                                      @ Goes to Hour 3
     add r9, r9, #1                                  @ Else, r9++
     str r9, [r3, #0x24]                             @ Store in the First counter for Hour
     mov r9, #0                                      @ Goes to 0
@@ -187,7 +188,7 @@ Hours2:
     str r9, [r3, #0x28]
     ldr r9, [r3, #0x24]
     cmp r9, #3
-    beq Hours3
+    bge Hours3
     add r9, r9, #1
     str r9, [r3, #0x24]
     mov r9, #0
@@ -199,7 +200,7 @@ Hours3:
     str r9, [r3, #0x24]
     ldr r9, [r3, #0x20]
     cmp r9, #2
-    beq Days1
+    bge Days1
     add r9, r9, #1
     str r9, [r3, #0x20]
     mov r9, #0
@@ -210,32 +211,32 @@ Days1:
     str r9, [r3, #0x20]
     ldr r9, [r3, #0x4]
     cmp r9, #9
-    beq Days2
+    bge Days2
     add r9, r9, #1
     str r9, [r3, #0x4]
     mov r9, #0
     b   PrDate
 
 Days2:
-    mov r9, #0
+    mov r9, #1
     str r9, [r3, #0x4]
     ldr r9, [r3, #0x0]
     cmp r9, #2
-    beq Month1
+    bge Month1
     add r9, r9, #1
     str r9, [r3, #0x0]
     mov r9, #0
     b   PrDate
 
 Month1:
-    ldr r9, [r3, #0x8]                              @ Load Second counter for month 00:10:2000
+    ldr r9, [r3, #0x08]                             @ Load Second counter for month 00:10:2000
     cmp r9, #1                                      @ If it's 1
-    beq Month2                                      @ Goes to Month2
+    bge Month2                                      @ Goes to Month2
     mov r9, #0                                      
-    str r9, [r3, #0x0]                              @ Store 0 in the First Counter of Days
-    ldr r9, [r3, #0xC]                              @ Load the Second counter for the month
+    str r9, [r3, #0x00]                             @ Store 0 in the First Counter of Days
+    ldr r9, [r3, #0x0C]                             @ Load the Second counter for the month
     cmp r9, #9                                      @ Compraes if it's 9, like 01-09-2000
-    beq Month3                                      @ If true, goes to Month3
+    bge Month3                                      @ If true, goes to Month3
     add r9, r9, #1                                  @ Else r9++
     str r9, [r3, #0xC]
     mov r9, #0
@@ -245,21 +246,21 @@ Month2:
     mov r9, #0
     str r9, [r3, #0x0]
     ldr r9, [r3, #0xC]
-    cmp r9, #1
-    beq Month3
+    cmp r9, #2
+    bge Month3
     add r9, r9, #1
     str r9, [r3, #0xC]
     mov r9, #0
     b   PrDate
 
 Month3:
-    mov r9, #0
+    mov r9, #1
     str r9, [r3, #0xC]
     ldr r9, [r3, #0x8]
     cmp r9, #1
-    beq Year1
+    bge Year1
     add r9, r9, #1
-    str r9, [r3, #0x20]
+    str r9, [r3, #0x8]
     mov r9, #0
     b   PrDate
 
@@ -269,10 +270,11 @@ Year1:
     str r9, [r3, #0x8]
     ldr r9, [r3, #0x1C]
     cmp r9, #9
-    beq Year2
+    bge Year2
     add r9, r9, #1
     str r9, [r3, #0x1C]
     mov r9, #0
+    b   PrDate
 
 Year2:
 
@@ -287,9 +289,9 @@ Ajust:
 
 
 
-.data                                               @ Starts with 01-01-2000 12:00:00
+.data @ .word represents 4 bytes of memory storage. This one Starts with 01-01-2000 12:00:00 if it can't pick it up from the system
 
-    DATA:  .word    0x00, 0x01, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00
-@                       0    1-    0     1-    2     0     0     0     1     2:    0     0:    0     0
-
+    DATA:  .word    0x02, 0x09, 0x01, 0x02, 0x02, 0x00, 0x00, 0x00, 0x02, 0x03, 0x05, 0x09, 0x05, 0x05
+@                       2    9  -  1     2  -  2     0     0     0     2     3  :  5     9  :  5     5
+@                   0x00 |0x04 |0x08 |0x0C |0x10 |0x14 |0x18 |0x1C |0x20 |0x24 |0x28 |0x2C |0x30 |0x34
 .end
