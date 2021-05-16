@@ -277,10 +277,42 @@ Year1:
     b   PrDate
 
 Year2:
+    mov r9, #0
+    str r9, [r3, #0x1C]
+    ldr r9, [r3, #0x18]
+    cmp r9, #9
+    bge Year3
+    add r9, r9, #1
+    str r9, [r3, #0x18]
+    mov r9, #0
+    b   PrDate
 
 Year3:
+    mov r9, #0
+    str r9, [r3, #0x18]
+    ldr r9, [r3, #0x14]
+    cmp r9, #9
+    bge Year4
+    add r9, r9, #1
+    str r9, [r3, #0x14]
+    mov r9, #0
+    b   PrDate
 
 Year4:
+    mov r9, #0
+    str r9, [r3, #0x14]
+    ldr r9, [r3, #0x10]
+    cmp r9, #9
+    bge Zero
+    add r9, r9, #1
+    str r9, [r3, #0x10]
+    mov r9, #0
+    b   PrDate
+
+Zero:
+    mov r9, #0
+    str r9, [r3, #0x10]
+    b PrDate
 
 BlueButt:
 
@@ -291,7 +323,7 @@ Ajust:
 
 .data @ .word represents 4 bytes of memory storage. This one Starts with 01-01-2000 12:00:00 if it can't pick it up from the system
 
-    DATA:  .word    0x02, 0x09, 0x01, 0x02, 0x02, 0x00, 0x00, 0x00, 0x02, 0x03, 0x05, 0x09, 0x05, 0x05
+    DATA:  .word    0x02, 0x09, 0x01, 0x02, 0x09, 0x09, 0x09, 0x09, 0x02, 0x03, 0x05, 0x09, 0x05, 0x05
 @                       2    9  -  1     2  -  2     0     0     0     2     3  :  5     9  :  5     5
 @                   0x00 |0x04 |0x08 |0x0C |0x10 |0x14 |0x18 |0x1C |0x20 |0x24 |0x28 |0x2C |0x30 |0x34
 .end
