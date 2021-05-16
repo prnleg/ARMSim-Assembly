@@ -209,18 +209,18 @@ Hours3:
 Days1:
     mov r9, #0
     str r9, [r3, #0x20]
-    ldr r9, [r3, #0x4]
+    ldr r9, [r3, #0x04]
     cmp r9, #9
     bge Days2
     add r9, r9, #1
-    str r9, [r3, #0x4]
+    str r9, [r3, #0x04]
     mov r9, #0
     b   PrDate
 
 Days2:
     mov r9, #1
-    str r9, [r3, #0x4]
-    ldr r9, [r3, #0x0]
+    str r9, [r3, #0x04]
+    ldr r9, [r3, #0x00]
     cmp r9, #2
     bge Month1
     add r9, r9, #1
@@ -238,36 +238,36 @@ Month1:
     cmp r9, #9                                      @ Compraes if it's 9, like 01-09-2000
     bge Month3                                      @ If true, goes to Month3
     add r9, r9, #1                                  @ Else r9++
-    str r9, [r3, #0xC]
+    str r9, [r3, #0x0C]
     mov r9, #0
     b   PrDate
 
 Month2:
     mov r9, #0
-    str r9, [r3, #0x0]
-    ldr r9, [r3, #0xC]
+    str r9, [r3, #0x00]
+    ldr r9, [r3, #0x0C]
     cmp r9, #2
     bge Month3
     add r9, r9, #1
-    str r9, [r3, #0xC]
+    str r9, [r3, #0x0C]
     mov r9, #0
     b   PrDate
 
 Month3:
     mov r9, #1
-    str r9, [r3, #0xC]
-    ldr r9, [r3, #0x8]
+    str r9, [r3, #0x0C]
+    ldr r9, [r3, #0x08]
     cmp r9, #1
     bge Year1
     add r9, r9, #1
-    str r9, [r3, #0x8]
+    str r9, [r3, #0x08]
     mov r9, #0
     b   PrDate
 
 
 Year1:
     mov r9, #0
-    str r9, [r3, #0x8]
+    str r9, [r3, #0x08]
     ldr r9, [r3, #0x1C]
     cmp r9, #9
     bge Year2
