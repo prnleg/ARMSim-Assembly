@@ -34,6 +34,8 @@
 @       Ajuste: (01-01-2000 27:78:90) -> (02-01-2000 00:00:00)
 @
 @       TUDO feito em memória do tamanho .word (32 bits)
+@       Se quiser fazer um teste geral ajuste para 29-12-9999 23:59:56 00:00
+@                                                       com o alarme em /\
 
 
 .equ RedLed, 0x201                          @ Bind for the Red LED's
@@ -717,7 +719,7 @@ PrintData:
 
 .data @ .word represents 4 bytes of memory storage. This one Starts with 01-01-2000 12:00:00 if it can't pick it up from the system
 
-    DATA:  .word    0x02, 0x09, 0x01, 0x02, 0x09, 0x09, 0x09, 0x09, 0x02, 0x03, 0x05, 0x09, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00
-@                       2    9  -  1     2  -  2     0     0     0     2     3  :  5     9  :  5     5     0     6:    0     0
+    DATA:  .word    0x00, 0x01, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00
+@                       0    1  -  0     1  -  2     0     0     0     1     2  :  0     0  :  0     0     0     6:    0     0
 @                   0x00 |0x04 |0x08 |0x0C |0x10 |0x14 |0x18 |0x1C |0x20 |0x24 |0x28 |0x2C |0x30 |0x34  | 0x38| 0x3C| 0x40| 0x44
 .end
