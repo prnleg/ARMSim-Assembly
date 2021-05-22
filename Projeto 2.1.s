@@ -5,6 +5,17 @@
 @ O código e os comentários estão em ingles porque eu os postei no github para que
 @ possa ser usado por outra pessoa, assim como o repositório inteiro.
 
+@ O
+@
+@
+@
+@
+@
+@
+@
+@
+@
+@
 
 .equ RedLed, 0x201                          @ Bind for the Red LED's
 .equ Segm,   0x200                          @ Bind to print 8-Seg
@@ -33,8 +44,8 @@
     str_barra: .asciz   "-  -"
     str_ponto: .asciz   ":  :"
     str_pont:  .asciz   ":"
-    str_alarm: .asciz   "<- Ajuste"
-    str_ajust: .asciz   "<- Alarme/Clock"
+    str_alarm: .asciz   "<- 3.3 Ajuste"
+    str_ajust: .asciz   "<- 2.3 Alarme/Clock"
     str_bar:   .asciz   "-"
     str_blank: .asciz   " "
 
@@ -173,13 +184,16 @@ Start:
     bal Ini
 
 Ini:
+    mov r7, #0
+    mov r0, #0x00
+    swi RedLed
     swi BlueB                                       @ Check if the Bluebutton was pressed
     cmp r0, #0x8000                                 @ Compare with '3.3'
     beq PrintData                                   @ Goes to Button Ajust
     cmp r0, #0x800                                  @ Compare with '2.3'
     beq PrAlar                                      @ Goes to Alarm
     ldr r0, [r3, #0x44]
-    ldr r1, [r3, #0x34]
+    ldr r1, [r3, #0x2C]
     cmp r0, r1
     beq Comp1
     cmp r7, #0
@@ -187,34 +201,34 @@ Ini:
 
 Comp1:
     ldr r0, [r3, #0x40]
-    ldr r1, [r3, #0x30]
+    ldr r1, [r3, #0x28]
     cmp r0, r1
     beq Comp2
     bne Clock
 
 Comp2:
     ldr r0, [r3, #0x3C]
-    ldr r1, [r3, #0x2C]
+    ldr r1, [r3, #0x24]
     cmp r0, r1
     beq Comp3
     bne Clock
     
 Comp3:
     ldr r0, [r3, #0x38]
-    ldr r1, [r3, #0x28]
+    ldr r1, [r3, #0x20]
     cmp r0, r1
     beq Blink
     bne Clock
 
 Blink:
+    ldr r0, [r3, #0x30]
+    cmp r0, #0
+    bgt Clock
     mov r0, #0x03
     swi RedLed
     add r7, r7, #1
     cmp r7, #10
     ble Clock
-    mov r7, #0
-    mov r0, #0x00
-    swi RedLed
     bgt Clock
 
 Alarm:
