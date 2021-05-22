@@ -6,10 +6,10 @@
 @ Disclaimer:
 @ O código e os comentários estão em ingles porque eu os postei no github para que
 @ possa ser usado por outra pessoa, assim como o repositório inteiro.
-@ https://github.com/ThePernalonga/ARMSim-Assembly (Esse repositório é meu)
+@ https://github.com/ThePernalonga/ARMSim-Assembly (Esse repositório é meu, André)
 @ Eu acho interessante que você possa repassar esse repositório aos futuros estudantes
-@ de Arquitetura e Organização de Computadores, não encontrava por nada muitas das funcionalidades que eu disponibilizei
-@ e acredito que para os próximos estudandes isso seja uma mão na roda (os códigos eu deixei todos comentados, em ingles)
+@ de Arquitetura e Organização de Computadores, não encontravamos por nada muitas das funcionalidades que eu disponibilizei
+@ e acreditamos que para os próximos estudandes isso seja uma mão na roda (os códigos eu deixei todos comentados, em ingles)
 @ (Pode deixar que eu irei retirar o projeto do repositório, só o coloquei lá para facilitar minha comunicação com meu parceiro)
 
 
