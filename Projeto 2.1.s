@@ -1,21 +1,40 @@
 @ Projeto 2 v1.1
-@ André L. G. Santos, Erick H. Dircksen
+@ Nome: André L. G. Santos          RA: 2090270
+@       Erick H. Dircksen               2086867
+@ 
 @
 @ Disclaimer:
 @ O código e os comentários estão em ingles porque eu os postei no github para que
 @ possa ser usado por outra pessoa, assim como o repositório inteiro.
+@ https://github.com/ThePernalonga/ARMSim-Assembly (Esse repositório é meu)
+@ Eu acho interessante que você possa repassar esse repositório aos futuros estudantes
+@ de Arquitetura e Organização de Computadores, não encontrava por nada muitas das funcionalidades que eu disponibilizei
+@ e acredito que para os próximos estudandes isso seja uma mão na roda (os códigos eu deixei todos comentados, em ingles)
+@ (Pode deixar que eu irei retirar o projeto do repositório, só o coloquei lá para facilitar minha comunicação com meu parceiro)
 
-@ O
+
+@ O código, de acordo com o enunciado, funciona da seguinte maneira:
 @
+@ a) O botao 2.3 abilita o modo Alarm/Clock, ligando o display de 8-Segm e mudando o LCD
+@ b) Ele mostra a cada segundo o display sendo atualizado junto com a atualização dos
+@       minutos, hora, dia, mes e ano (e corrigindo caso esteja no ano 9999 para 0000).
+@ c) Ele compara quando o horario do alarme bate com o horario atual, acendendo ambos os RedLED's,
+@       no formato HH:MM, durante 10 segundos.
+@ d) A mudança entre Alarm e Clock ocorre atraves de um dos botes azuis (2.3)
+@ e) Através do botão Ajuste (3.3) é possível ajustar o DD-MM-AAAA HH:MM:SS e o Alarme
+@       este infelizmente não consegui a tempo diferencia-lo através dos modos, mas coloquei-o para que pudesse 
+@       ainda assim trocar o horário do alarme e o mesmo continua funcional após a alteração.
 @
+@       |1|2|3| |   Essa é a representação dos digitos para alterar no modo Ajuste.
+@       |4|5|6| |
+@       |7|8|9|*|   * Clock/Alarme
+@       | |0| |*|   * Ajuste
 @
+@       Caso o usuario insira um valor impossivel ele irá rotacionar de acordo com maior valor, exemplo:
+@       Ajuste: (01-01-2000 27:78:90) -> (02-01-2000 00:00:00)
 @
-@
-@
-@
-@
-@
-@
+@       TUDO feito em memória do tamanho .word (32 bits)
+
 
 .equ RedLed, 0x201                          @ Bind for the Red LED's
 .equ Segm,   0x200                          @ Bind to print 8-Seg
@@ -178,6 +197,7 @@ PrAlar:
     swi Print
     bal Alarm
 
+@ Starts the first Tick for the clock
 Start:
     swi Ticks                                       @ Puts on r0 the first value of Tick
     mov r4, r0                                      @ Moves to r9
@@ -192,38 +212,38 @@ Ini:
     beq PrintData                                   @ Goes to Button Ajust
     cmp r0, #0x800                                  @ Compare with '2.3'
     beq PrAlar                                      @ Goes to Alarm
-    ldr r0, [r3, #0x44]
-    ldr r1, [r3, #0x2C]
-    cmp r0, r1
-    beq Comp1
+    ldr r0, [r3, #0x44]                             @ Loads the 0-9 minutes of the Alarm
+    ldr r1, [r3, #0x2C]                             @ Loads the 0-9 minutes of the Clock
+    cmp r0, r1                                      @ Compare if they are equal
+    beq Comp1                                       @ If true, goes to comp1
     cmp r7, #0
     bne Blink                                       @ If not, just continue with the clock
 
-Comp1:
+Comp1:                                              @ This one compare the 10-50 Minutes
     ldr r0, [r3, #0x40]
     ldr r1, [r3, #0x28]
     cmp r0, r1
     beq Comp2
     bne Clock
 
-Comp2:
+Comp2:                                              @ This one compare the 0-9 Hours
     ldr r0, [r3, #0x3C]
     ldr r1, [r3, #0x24]
     cmp r0, r1
     beq Comp3
     bne Clock
     
-Comp3:
+Comp3:                                              @ This one compare the 10-23 Hours
     ldr r0, [r3, #0x38]
     ldr r1, [r3, #0x20]
     cmp r0, r1
-    beq Blink
-    bne Clock
+    beq Blink                                       @ If true, goes to the RedLED's
+    bne Clock                                       @ If false, goes back to the main clock
 
-Blink:
-    ldr r0, [r3, #0x30]
-    cmp r0, #0
-    bgt Clock
+Blink:                                              @ This one loads in 'r0' the 10th second to compare
+    ldr r0, [r3, #0x30]                             @ if has passed 10 seconds.
+    cmp r0, #0                                      @ If true, goes directally to Clock and Set RedLED's off
+    bgt Clock                                       @ If false, continue to display the RedLED's
     mov r0, #0x03
     swi RedLed
     add r7, r7, #1
@@ -258,7 +278,7 @@ Seconds:
     ldr r9, [r3, #0x30] 
     cmp r9, #5                                      @ Compare if it's the last number
     bge Minutes1                                    @ If True goes to Minute
-    add r9, r9, #1                                  @ Else r9++ and goes
+    add r9, r9, #1                                  @ Else r9++ and goes to Print
     str r9, [r3, #0x30]
     mov r9, #0
     bal PrDate
@@ -267,9 +287,9 @@ Minutes1:
     mov r9, #0
     str r9, [r3, #0x30]
     ldr r9, [r3, #0x2C]
-    cmp r9, #9
-    bge Minutes2
-    add r9, r9, #1
+    cmp r9, #9                                      @ Compare if it's the last number of 0-9
+    bge Minutes2                                    @ If true goes to Minute 2
+    add r9, r9, #1                                  @ Else r9++ and goes to Print
     str r9, [r3, #0x2C]
     mov r9, #0
     bal PrDate
@@ -278,10 +298,10 @@ Minutes2:
     mov r9, #0
     str r9, [r3, #0x2C]
     ldr r9, [r3, #0x28]
-    cmp r9, #5
-    bge Hours1
+    cmp r9, #5                                      @ Compare if it's the last number
+    bge Hours1                                      @ If true goes to Minute 2
     add r9, r9, #1
-    str r9, [r3, #0x28]
+    str r9, [r3, #0x28]                             @ Else r9++ and goes to Print
     mov r9, #0
     bal PrDate
 
@@ -299,8 +319,8 @@ Hours1:
     mov r9, #0                                      @ Goes to 0
     bal PrDate
 
-Hours2:
-    mov r9, #0
+Hours2:                                             @ Hours2 only works if it's 20:00's
+    mov r9, #0                                      @ and it's just to complete 24h
     str r9, [r3, #0x28]
     ldr r9, [r3, #0x24]
     cmp r9, #3
@@ -311,7 +331,7 @@ Hours2:
     bal PrDate
     
 
-Hours3:
+Hours3:                                             @ It's to ++ to the 20:00's
     mov r9, #0
     str r9, [r3, #0x24]
     ldr r9, [r3, #0x20]
@@ -322,8 +342,8 @@ Hours3:
     mov r9, #0
     bal PrDate
 
-Days1:
-    mov r9, #0
+Days1:                                              @ Days compare the same way as Hours and change value
+    mov r9, #0                                      @ but with the gap 0-9
     str r9, [r3, #0x20]
     ldr r9, [r3, #0x04]
     cmp r9, #9
@@ -333,8 +353,8 @@ Days1:
     mov r9, #0
     bal PrDate
 
-Days2:
-    mov r9, #1
+Days2:                                              @ Days compare the same way as Hours and change value
+    mov r9, #1                                      @ but with the gap 0-2
     str r9, [r3, #0x04]
     ldr r9, [r3, #0x00]
     cmp r9, #2
@@ -381,8 +401,8 @@ Month3:
     bal PrDate
 
 
-Year1:
-    mov r9, #0
+Year1:                                              @ This one is linear with all Year's
+    mov r9, #0                                      @ that goes between 0-9 in 0's, 10's, 100's, 1.000's
     str r9, [r3, #0x08]
     ldr r9, [r3, #0x1C]
     cmp r9, #9
@@ -425,13 +445,14 @@ Year4:
     mov r9, #0
     bal PrDate
 
-Zero:
-    mov r9, #0
-    str r9, [r3, #0x10]
+Zero:                                               @ This is just to not generate Year's 10.000
+    mov r9, #0                                      @ he stores a '0' in the Year4 so it goes from
+    str r9, [r3, #0x10]                             @ 9999 to 0000
     bal PrDate
 
 
-Black:
+@ Here is where it starts the Button Section (Blue and Black)
+Black:                                              @ Do the compare to see if the Black Button was pressed
     mov r0, r5
     mov r1, #2
     ldr r2, =str_bar
@@ -444,10 +465,10 @@ Black:
     swi BlueB
     cmp r0, #0
     beq Black
-    bne BlueButton
+    bne BlueButton                                  @ If none it goes to Blue Button Section
 
-BlueButton:
-    cmp r0, #0x01
+BlueButton:                                         @ Do the compare to see if any Blue Button was pressed
+    cmp r0, #0x01                                   @ if the 3.3 is pressed it goes back to Clock
     mov r9, #0x01
     beq Store
     cmp r0, #0x02
@@ -479,9 +500,9 @@ BlueButton:
     beq Store
     cmp r0, #0x8000
     beq Out
-    bne Black
+    bne Black                                       @ Else it goes back to Black Button section
 
-Out:
+Out:                                                @ This one clears the clock line and the cursor
     mov r0, #1
     swi ClearL
     mov r0, #2
@@ -495,8 +516,8 @@ Out:
     swi PrintS
     bal Ini
 
-Store:
-    cmp r5, #1
+Store:                                              @ This one do the compare and send to right value
+    cmp r5, #1                                      @ to StoreVer. It has to store some value.
     mov r6, #0x00
     beq StoreVer
     cmp r5, #2
@@ -551,26 +572,27 @@ Store:
     mov r6, #0x44
     beq StoreVer
 
-StoreVer:
+StoreVer:                                           @ Recive the value and stores in 'r6' position
     str r9, [r3, r6]
     bal PrintData
 
-BlackD:
-    cmp r5, #1
+BlackD:                                             @ If you press the Right Black Button the cursor
+    cmp r5, #1                                      @ '-' goes to the right.
     blt AddMM
-    cmp r5, #25  @ Trocar dps pra posição do 'y'
+    cmp r5, #25 @ Trocar dps pra posição do 'y' "limite"
     bge Black
     bal ClearD
 
-BlackE:
-    cmp r5, #26  @ Trocar dps pra posição do 'y'
+BlackE:                                             @ If you press the Left Black Button the cursor
+    cmp r5, #26                                     @ '-' goes to the left.
     bgt SubMM
-    cmp r5, #1
+    cmp r5, #1 @ Trocar dps pra posição do 'y' "limite"
     ble Black
     bal ClearE
 
+@ This one verifes if it's in a wrong position (':' or '-')
 AddMM:
-    add r5, r5, #1
+    add r5, r5, #1                                  @ Do a initial ++
     cmp r5, #3
     beq AddMM
     cmp r5, #6
@@ -585,10 +607,11 @@ AddMM:
     beq AddMM
     cmp r5, #23
     beq AddMM
-    bal PrtD
+    bal Prt
 
+@ This one verifes if it's in a wrong position (':' or '-')
 SubMM:
-    sub r5, r5, #1
+    sub r5, r5, #1                                  @ Do a initial --
     cmp r5, #23
     beq SubMM
     cmp r5, #20
@@ -603,34 +626,32 @@ SubMM:
     beq SubMM
     cmp r5, #3
     beq SubMM
-    bal PrtE
+    bal Prt
 
+@ This one clears where the cursos passed from the right
 ClearD:
     mov r0, r5
-    mov r1, #2
+    mov r1, #2                                      @ Pick the actual place and blank it
     ldr r2, =str_blank
     swi PrintS
-    bal AddMM
+    bal AddMM                                       @ Goes to ++
 
+@ This one clears where the cursos passed from the left
 ClearE:
     mov r0, r5
-    mov r1, #2
+    mov r1, #2                                      @ Pick the actual place and blank it
     ldr r2, =str_blank
     swi PrintS
-    bal SubMM
+    bal SubMM                                       @ Goes to --
 
-PrtD:
+@ This one print where the cursos is
+Prt:
     mov r0, r5
     ldr r2, =str_bar
     swi PrintS
     bal Black
 
-PrtE:
-    mov r0, r5
-    ldr r2, =str_bar
-    swi PrintS
-    bal Black
-
+@ This print on LCD as well as the initial Print
 PrintData:
     mov r1, #1
     mov r0, #1
