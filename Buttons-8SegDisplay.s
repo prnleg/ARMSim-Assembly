@@ -63,101 +63,53 @@ Start:
 Display:
                                                     @ As the macro runs, it will pull the position. '0' in this case
     cmp r0, #0x01                                   @ This represent the value of the Blue Button
-    beq Dig0
+    mov r3, #0
+    beq Dig
     cmp r0, #0x02
-    beq Dig1
+    mov r3, #1
+    beq Dig
     cmp r0, #0x04
-    beq Dig2
+    mov r3, #2
+    beq Dig
     cmp r0, #0x08
-    beq Dig3
+    mov r3, #3
+    beq Dig
     cmp r0, #0x10
-    beq Dig4
+    mov r3, #4
+    beq Dig
     cmp r0, #0x20
-    beq Dig5
+    mov r3, #5
+    beq Dig
     cmp r0, #0x40
-    beq Dig6
+    mov r3, #6
+    beq Dig
     cmp r0, #0x80
-    beq Dig7
+    mov r3, #7
+    beq Dig
     cmp r0, #0x100
-    beq Dig8
+    mov r3, #8
+    beq Dig
     cmp r0, #0x200
-    beq Dig9
+    mov r3, #9
+    beq Dig
     cmp r0, #0x400
-    beq DigA
+    mov r3, #10
+    beq Dig
     cmp r0, #0x800
-    beq DigB
+    mov r3, #11
+    beq Dig
     cmp r0, #0x1000
-    beq DigC
+    mov r3, #12
+    beq Dig
     cmp r0, #0x2000
-    beq DigD
+    mov r3, #13
+    beq Dig
     cmp r0, #0x4000
-    beq DigE
+    mov r3, #14
+    beq Dig
     cmp r0, #0x8000
-    beq DigF
-
-Dig0:
-mov r3, #0
-b Dig
-
-Dig1:
-mov r3, #1
-b Dig
-
-Dig2:
-mov r3, #2
-b Dig
-
-Dig3:
-mov r3, #3
-b Dig
-
-Dig4:
-mov r3, #4
-b Dig
-
-Dig5:
-mov r3, #5
-b Dig
-
-Dig6:
-mov r3, #6
-b Dig
-
-Dig7:
-mov r3, #7
-b Dig
-
-Dig8:
-mov r3, #8
-b Dig
-
-Dig9:
-mov r3, #9
-b Dig
-
-DigA:
-mov r3, #10
-b Dig
-
-DigB:
-mov r3, #11
-b Dig
-
-DigC:
-mov r3, #12
-b Dig
-
-DigD:
-mov r3, #13
-b Dig
-
-DigE:
-mov r3, #14
-b Dig
-
-DigF:
-mov r3, #15
-b Dig
+    mov r3, #15
+    beq Dig
 
 
 @ Each function is printing a number (in hexa) on the 8 Segment Display
