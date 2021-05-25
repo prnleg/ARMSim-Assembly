@@ -1,7 +1,7 @@
 @ Just a code that read and write in memory
 
-.equ Clear,0x206                        @ Bind to clear the LCD
-.equ Print,0x205                        @ Bind to print an Integer on the LCD
+.equ Clear, 0x206                       @ Bind to clear the LCD
+.equ Print, 0x205                       @ Bind to print an Integer on the LCD
 .equ PrintS,0x204                       @ Bind to print a String on the LCD
 
 .text
@@ -59,7 +59,7 @@ Read:
                                         @ knowing that you're using .word as array of 32 bits (can be .hword or .byte)
     swi Print
     add r1, r1, #1
-    subs r5, r5, #1
+    subs r5, r5, #1                     @ Do a sub and make a comparation with 0, until that still on the loop
     bne Read
 
 
